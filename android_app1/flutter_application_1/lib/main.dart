@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/5120183458/_login_01.dart';
+import 'package:flutter_application_1/User_Info/_user_info.dart';
 
 void main() {
   runApp(MyApp());
@@ -32,6 +33,7 @@ class MyWidget extends StatelessWidget {
         RaisedButton(
           child: Text('51201823458吕治良'),
           onPressed: () {
+            Person.init();
             Navigator.push(
                 context,
                 MaterialPageRoute(

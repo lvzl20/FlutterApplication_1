@@ -56,4 +56,10 @@ class Person {
     // 注册成功
     return 0;
   }
+
+  static void init() {
+    person = new UserInfo('12345678912', '123123', 'xiaobai' + '12345678912');
+    person.pic = 'images/test1.jpg';
+    Person.UserInfoList.add(person);
+  }
 }

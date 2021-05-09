@@ -27,6 +27,7 @@ class Login extends State<TextFieldAndCheckPage> {
   TextEditingController pwdController = TextEditingController();
   // 显示与隐藏密码
   bool isCanSee = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -141,9 +142,10 @@ class Login extends State<TextFieldAndCheckPage> {
         onTextClear();
         setState(() {
           Navigator.push(
+            // 用户登录进去
             context,
             MaterialPageRoute(
-              builder: (context) => UserLog(),
+              builder: (context) => MyWidget2(),
             ),
           );
         });

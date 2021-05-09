@@ -50,6 +50,7 @@ class SignUp extends StatelessWidget {
               RaisedButton(
                 onPressed: () {
                   var name = 'xiaobai_' + pnumController.text;
+                  // var name = '自定义新闻浏览器';
                   var person = new UserInfo(
                       pnumController.text, pwdController.text, name);
                   person.pic = 'images/test1.jpg';
