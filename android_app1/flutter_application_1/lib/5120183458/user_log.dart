@@ -25,7 +25,7 @@ class UserLog extends State<UserLogCheckState> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2,
+      length: 3,
       initialIndex: 0,
       child: Scaffold(
         appBar: AppBar(
@@ -48,9 +48,9 @@ class UserLog extends State<UserLogCheckState> {
           ],
           bottom: TabBar(
             tabs: <Widget>[
-              // Tab(
-              //   text: '新闻主页',
-              // ),
+              Tab(
+                text: '新闻主页',
+              ),
               Tab(
                 text: '动漫资讯',
               ),
@@ -62,7 +62,7 @@ class UserLog extends State<UserLogCheckState> {
         ),
         body: TabBarView(
           children: <Widget>[
-            // NewsPage(),
+            NewsPage(),
             ComicsPage(),
             ShowUser(),
           ],

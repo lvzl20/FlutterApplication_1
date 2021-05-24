@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:url_launcher/url_launcher.dart';
 
-Future<List<News>> getDatas() async {
+Future<List<News>> getDatas1() async {
   final response = await http.get(Uri.parse(
       'http://api.tianapi.com/dongman/index?key=13d00a50a6581693d2ca2ee0b4d4c449&num=10&page=1'));
   Utf8Decoder decode = new Utf8Decoder();
@@ -27,7 +27,7 @@ class _ComicPageState extends State<ComicsPage> {
   @override
   void initState() {
     // 未请求过数据，当数据得到后更新动漫数据列表变量_datas，并刷新界面
-    getDatas()
+    getDatas1()
         .then((List<News> datas) {
           if (!_cancelConnect) {
             setState(() {
