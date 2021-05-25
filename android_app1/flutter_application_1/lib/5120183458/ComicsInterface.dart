@@ -4,14 +4,17 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:url_launcher/url_launcher.dart';
 
+int pageNum = 1;
+
 Future<List<News>> getDatas1() async {
   final response = await http.get(Uri.parse(
-      'http://api.tianapi.com/dongman/index?key=13d00a50a6581693d2ca2ee0b4d4c449&num=10&page=1'));
+      'http://api.tianapi.com/dongman/index?key=13d00a50a6581693d2ca2ee0b4d4c449&num=10&page=$pageNum'));
   Utf8Decoder decode = new Utf8Decoder();
   Map<String, dynamic> result = jsonDecode(decode.convert(response.bodyBytes));
   //print(result);
   List<News> datas; //转列表
   datas = result['newslist'].map<News>((item) => News.fromJson(item)).toList();
+  pageNum += 1;
   return datas; //返回 初始化
 }
 
@@ -42,6 +45,7 @@ class _ComicPageState extends State<ComicsPage> {
         .whenComplete(() {
           // 没有错误，打印新闻获取完毕
           print('新闻获取完毕');
+          print('page=$pageNum');
         })
         .timeout(Duration(seconds: 5))
         .catchError((timeOut) {
@@ -51,10 +55,40 @@ class _ComicPageState extends State<ComicsPage> {
         });
   }
 
+  Future<void> _onRefresh() async {
+    await Future.delayed(Duration(seconds: 1), () {
+      // getDatas();
+      getDatas1()
+          .then((List<News> datas) {
+            if (!_cancelConnect) {
+              setState(() {
+                _datas = datas; // 初始化state，重新刷新界面
+              });
+            }
+          })
+          .catchError((e) {
+            // 如果获取数据出错，打印错误信息
+            print('error$e');
+          })
+          .whenComplete(() {
+            // 没有错误，打印新闻获取完毕
+            print('新闻获取完毕');
+            print('page=$pageNum');
+          })
+          .timeout(Duration(seconds: 5))
+          .catchError((timeOut) {
+            // 指定时间超时后，打印超时，更改数据请求标志位，不再请求更新数据
+            print('超时:${timeOut}');
+            // _cancelConnect = true;
+          });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Container(
+        body: RefreshIndicator(
+      onRefresh: _onRefresh,
       child: ListView.builder(
         itemCount: _datas.length,
         itemBuilder: (BuildContext context, int index) {
@@ -113,9 +147,15 @@ class _ComicPageState extends State<ComicsPage> {
                     onTap: () async => {
                           // String url = _datas[idx].url.toString();
                           if (await canLaunch(_datas[index].url.toString()))
-                            {await launch(_datas[index].url.toString())}
+                            {
+                              await launch(_datas[index].url.toString()),
+                              print('成功访问url = ${_datas[index].url.toString()}')
+                            }
                           else
-                            {print('不能访问')}
+                            {
+                              print('不能访问'),
+                              print('url = ${_datas[index].url.toString()}')
+                            }
                         }),
               ));
         },
